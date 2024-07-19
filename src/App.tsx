@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder as faSolidFolder } from '@fortawesome/free-solid-svg-icons';
-import { faFile } from '@fortawesome/free-regular-svg-icons';
+import { faFolder, faFile } from '@fortawesome/free-regular-svg-icons';
+import { useState } from 'react';
 
 enum ItemType {
   FOLDER,
@@ -99,20 +100,32 @@ const File = ({ file, depth }: { file: FileItem; depth: number }) => (
   </div>
 );
 
-const Folder = ({ folder, depth }: { folder: FolderItem; depth: number }) => (
-  <div style={{ marginLeft: `${depth * 8}px` }}>
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <FontAwesomeIcon style={{ cursor: 'pointer' }} icon={faSolidFolder} />
-      <div style={{ marginLeft: '8px' }}>{folder.name}</div>
-    </div>
-    {folder.members?.map((member: Item) => (
-      <div key={member.id}>
-        {member.type === ItemType.FOLDER && <Folder folder={member} depth={depth + 1} />}
-        {member.type === ItemType.FILE && <File file={member} depth={depth + 1} />}
+const Folder = ({ folder, depth }: { folder: FolderItem; depth: number }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleExpand = () => {
+    setIsExpanded((prev) => !prev);
+  };
+  return (
+    <div style={{ marginLeft: `${depth * 8}px` }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <FontAwesomeIcon
+          onClick={handleExpand}
+          style={{ cursor: 'pointer' }}
+          icon={isExpanded ? faFolder : faSolidFolder}
+        />
+        <div style={{ marginLeft: '8px' }}>{folder.name}</div>
       </div>
-    ))}
-  </div>
-);
+      {isExpanded &&
+        folder.members?.map((member: Item) => (
+          <div key={member.id}>
+            {member.type === ItemType.FOLDER && <Folder folder={member} depth={depth + 1} />}
+            {member.type === ItemType.FILE && <File file={member} depth={depth + 1} />}
+          </div>
+        ))}
+    </div>
+  );
+};
 
 function App() {
   // preparation state
