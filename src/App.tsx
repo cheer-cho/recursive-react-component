@@ -131,7 +131,8 @@ function App() {
   // preparation state
 
   return (
-    <div>
+    <div style={{ paddingLeft: '40px', paddingTop: '24px' }}>
+      <h1>Explorer</h1>
       {tree.map((item: Item) => (
         <div key={item.id}>
           {item.type === ItemType.FOLDER && <Folder folder={item} depth={0} />}
