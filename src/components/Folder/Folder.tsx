@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { faFolder } from '@fortawesome/free-regular-svg-icons';
-import { faFolder as faSolidFolder } from '@fortawesome/free-solid-svg-icons';
+import { faFolder, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import File from '../File/File';
@@ -10,15 +9,21 @@ const Folder = ({ folder, depth }: { folder: FolderItem; depth: number }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleExpand = () => {
+    console.log('NOT expanding');
+    if (!folder.members || folder.members.length === 0) {
+      return;
+    }
+    console.log('expanding');
     setIsExpanded((prev) => !prev);
   };
   return (
-    <div style={{ marginLeft: `${depth * 8}px` }}>
+    <div role="treeitem" style={{ marginLeft: `${depth * 8}px` }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <FontAwesomeIcon
           onClick={handleExpand}
           style={{ cursor: 'pointer' }}
-          icon={isExpanded ? faFolder : faSolidFolder}
+          icon={isExpanded ? faFolderOpen : faFolder}
+          data-testid="folder-icon"
         />
         <div style={{ marginLeft: '8px' }}>{folder.name}</div>
       </div>
