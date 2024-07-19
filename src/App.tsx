@@ -92,23 +92,23 @@ const tree: Item[] = [
   { id: '12', name: 'vite.config.ts', type: ItemType.FILE },
 ];
 
-const File = ({ file }: { file: FileItem }) => (
-  <div style={{ display: 'flex', alignItems: 'center' }}>
+const File = ({ file, depth }: { file: FileItem; depth: number }) => (
+  <div style={{ display: 'flex', alignItems: 'center', marginLeft: `${depth * 8}px` }}>
     <FontAwesomeIcon icon={faFile} />
     <div style={{ marginLeft: '8px' }}>{file.name}</div>
   </div>
 );
 
-const Folder = ({ folder }: { folder: FolderItem }) => (
-  <div>
+const Folder = ({ folder, depth }: { folder: FolderItem; depth: number }) => (
+  <div style={{ marginLeft: `${depth * 8}px` }}>
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <FontAwesomeIcon style={{ cursor: 'pointer' }} icon={faSolidFolder} />
       <div style={{ marginLeft: '8px' }}>{folder.name}</div>
     </div>
     {folder.members?.map((member: Item) => (
-      <div>
-        {member.type === ItemType.FOLDER && <Folder folder={member} />}
-        {member.type === ItemType.FILE && <File file={member} />}
+      <div key={member.id}>
+        {member.type === ItemType.FOLDER && <Folder folder={member} depth={depth + 1} />}
+        {member.type === ItemType.FILE && <File file={member} depth={depth + 1} />}
       </div>
     ))}
   </div>
@@ -121,8 +121,8 @@ function App() {
     <div>
       {tree.map((item: Item) => (
         <div key={item.id}>
-          {item.type === ItemType.FOLDER && <Folder folder={item} />}
-          {item.type === ItemType.FILE && <File file={item} />}
+          {item.type === ItemType.FOLDER && <Folder folder={item} depth={0} />}
+          {item.type === ItemType.FILE && <File file={item} depth={0} />}
         </div>
       ))}
     </div>
