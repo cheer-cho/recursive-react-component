@@ -1,6 +1,6 @@
 import { Item, ItemType } from './interfaces';
-import File from './components/File';
-import Folder from './components/Folder';
+import File from './components/File/File';
+import Folder from './components/Folder/Folder';
 
 const tree: Item[] = [
   {
@@ -74,13 +74,16 @@ function App() {
 
   return (
     <div style={{ paddingLeft: '40px', paddingTop: '24px' }}>
-      <h1>Explorer</h1>
-      {tree.map((item: Item) => (
-        <div key={item.id}>
-          {item.type === ItemType.FOLDER && <Folder folder={item} depth={0} />}
-          {item.type === ItemType.FILE && <File file={item} depth={0} />}
-        </div>
-      ))}
+      <h1 id="tree-name">Explorer</h1>
+      <div role="tree" aria-labelledby="tree-name">
+        {tree.map((item: Item) =>
+          item.type === ItemType.FOLDER ? (
+            <Folder key={item.id} folder={item} depth={0} />
+          ) : (
+            <File key={item.id} file={item} depth={0} />
+          )
+        )}
+      </div>
     </div>
   );
 }

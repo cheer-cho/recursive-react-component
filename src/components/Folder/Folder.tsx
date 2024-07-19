@@ -3,8 +3,8 @@ import { faFolder } from '@fortawesome/free-regular-svg-icons';
 import { faFolder as faSolidFolder } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import File from './File';
-import { FolderItem, Item, ItemType } from '../interfaces';
+import File from '../File/File';
+import { FolderItem, Item, ItemType } from '../../interfaces';
 
 const Folder = ({ folder, depth }: { folder: FolderItem; depth: number }) => {
   const [isExpanded, setIsExpanded] = useState(false);
