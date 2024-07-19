@@ -1,30 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolder as faSolidFolder } from '@fortawesome/free-solid-svg-icons';
-import { faFolder, faFile } from '@fortawesome/free-regular-svg-icons';
-import { useState } from 'react';
-
-enum ItemType {
-  FOLDER,
-  FILE,
-}
-
-interface BaseItem {
-  id: string;
-  name: string;
-  type: ItemType;
-}
-
-interface FolderItem extends BaseItem {
-  type: ItemType.FOLDER;
-  members: Item[];
-}
-
-interface FileItem extends BaseItem {
-  type: ItemType.FILE;
-  members?: never;
-}
-
-type Item = FolderItem | FileItem;
+import { Item, ItemType } from './interfaces';
+import File from './components/File';
+import Folder from './components/Folder';
 
 const tree: Item[] = [
   {
@@ -92,40 +68,6 @@ const tree: Item[] = [
   { id: '11', name: 'tsconfig.node.json', type: ItemType.FILE },
   { id: '12', name: 'vite.config.ts', type: ItemType.FILE },
 ];
-
-const File = ({ file, depth }: { file: FileItem; depth: number }) => (
-  <div style={{ display: 'flex', alignItems: 'center', marginLeft: `${depth * 8}px` }}>
-    <FontAwesomeIcon icon={faFile} />
-    <div style={{ marginLeft: '8px' }}>{file.name}</div>
-  </div>
-);
-
-const Folder = ({ folder, depth }: { folder: FolderItem; depth: number }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const handleExpand = () => {
-    setIsExpanded((prev) => !prev);
-  };
-  return (
-    <div style={{ marginLeft: `${depth * 8}px` }}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <FontAwesomeIcon
-          onClick={handleExpand}
-          style={{ cursor: 'pointer' }}
-          icon={isExpanded ? faFolder : faSolidFolder}
-        />
-        <div style={{ marginLeft: '8px' }}>{folder.name}</div>
-      </div>
-      {isExpanded &&
-        folder.members?.map((member: Item) => (
-          <div key={member.id}>
-            {member.type === ItemType.FOLDER && <Folder folder={member} depth={depth + 1} />}
-            {member.type === ItemType.FILE && <File file={member} depth={depth + 1} />}
-          </div>
-        ))}
-    </div>
-  );
-};
 
 function App() {
   // preparation state
