@@ -100,9 +100,17 @@ const File = ({ file }: { file: FileItem }) => (
 );
 
 const Folder = ({ folder }: { folder: FolderItem }) => (
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-    <FontAwesomeIcon style={{ cursor: 'pointer' }} icon={faSolidFolder} />
-    <div style={{ marginLeft: '8px' }}>{folder.name}</div>
+  <div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <FontAwesomeIcon style={{ cursor: 'pointer' }} icon={faSolidFolder} />
+      <div style={{ marginLeft: '8px' }}>{folder.name}</div>
+    </div>
+    {folder.members?.map((member: Item) => (
+      <div>
+        {member.type === ItemType.FOLDER && <Folder folder={member} />}
+        {member.type === ItemType.FILE && <File file={member} />}
+      </div>
+    ))}
   </div>
 );
 
