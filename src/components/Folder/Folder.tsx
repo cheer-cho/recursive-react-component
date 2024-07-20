@@ -9,11 +9,9 @@ const Folder = ({ folder, depth }: { folder: FolderItem; depth: number }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleExpand = () => {
-    console.log('NOT expanding');
     if (!folder.members || folder.members.length === 0) {
       return;
     }
-    console.log('expanding');
     setIsExpanded((prev) => !prev);
   };
   return (
